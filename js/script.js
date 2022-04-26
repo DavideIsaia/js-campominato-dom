@@ -42,15 +42,18 @@ function play() {
         gridSideLength = 7;
     }
 
+    // geenero le bombe sulla griglia in modo random
+    const bombsQuantity = 16;
+    const bombsArray = generateRandomNumb(bombsQuantity,gridSize);
+    // massimo numero di tentativi andati a segno (punteggio) 
+    const safeItem = [];
+    const maxPoints = gridSize - bombsQuantity;
+
     console.log("difficoltà", difficulty, "grandezza griglia", gridSize, "lato griglia", gridSideLength);
     
     const grid = document.createElement("div");
     grid.className = "grid";
     // console.log(grid);
-
-    // geenero le bombe sulla griglia in modo random
-    const bombsQuantity = 16;
-    const bombsArray = generateRandomNumb(bombsQuantity,gridSize);     
 
     // genero le celle da 1 a gridSize
     for (let i = 1; i <= gridSize; i++) {
@@ -72,12 +75,53 @@ function play() {
 
         // se l'item è presente nell'array allora ho perso
         if (bombsArray.includes(clickedItem)) {
-            this.classList.add("bomb");
+            endGame();
         } else {
             // altrimenti non ci sono bombe e proseguo
             this.classList.add("selected");
             console.log(this);
+            // elimino la possibilità di poter ricliccare sugli item
+            this.style.pointerEvents = "none";
+
+            // riempio l'array di numeri giusti per poi avere il punteggio
+            safeItem.push(clickedItem);
+            console.log("numeri sicuri", safeItem);
+
+            // se raggiungo il limite massimo allora ho vinto
+            if (safeItem.length === maxPoints) {
+                endGame();
+            }
         }
+    }
+    
+    /**
+     * Descrizione: dichiara la fine del gioco per vittoria o dando il punteggio se si prende una bomba
+     */
+    function endGame() {
+        const items = document.querySelectorAll(".square");
+        for (let i = 1; i < items.length; i++) {
+            // devo mettere i - 1 altrimenti l'array (che parte a contare da zero) punterà alla casella successiva
+            const square = items[i - 1];
+            // se l'array delle bombe include l'item cliccato allora finisci il gioco
+            if (bombsArray.includes(i)) {
+                square.classList.add("bomb");
+            }
+            // evito di poter continuare a cliccare dopo la fine del gioco
+            square.style.pointerEvents = 'none';
+        }
+        
+        // creo il messaggio di fine gioco
+        const endResult = document.createElement("h2");
+        endResult.className = "result";
+        // se non clicco mai bombe , avrò il messaggio di vittoria
+        let result = "Complimenti, hai vinto!";
+        // se il numero di quadrati cliccabili sarà minore del punteggio massimo, mostro il punteggio raggiunto
+        if (safeItem.length < maxPoints) {
+            result = `Hai perso, il tuo punteggio è di ${safeItem.length}`;
+        }
+        endResult.textContent = result;
+        console.log(result);
+        document.querySelector("main").append(endResult);
     }
 }
 
@@ -99,17 +143,18 @@ function createGridItem(number, gridSideLength) {
     // aggiungo style inline in html e non nel CSS
     item.style.width = sideLength;
     item.style.height = sideLength;
-    // aggiungo sequenzialmente i vari item mettendo il numero dentro uno span
-    item.innerHTML += `<span>${number}</span>`;
-    // console.log(item);
-    
+
+    // aggiungo i vari item mettendo il numero dentro uno span
+    item.innerHTML = `<span>${number}</span>`;
+    // console.log(item);    
     return item;
 }
 
+
 /**
  * Descrizione: la funzione genera un array con la quantità di numeri random che voglio (senza ripetizioni) in base al range entro cui voglio trovarli
- * @param {any} quantity
- * @param {any} maxLimit
+ * @param {any} bombsquantity numeri random da generare
+ * @param {any} maxLimit range massimo
  * @returns {any} un array dove si trovano i numeri random
  */
 function generateRandomNumb (bombsQuantity, maxLimit) {
