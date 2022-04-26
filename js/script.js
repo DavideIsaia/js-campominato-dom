@@ -67,11 +67,17 @@ function play() {
 
     // per non usare metodo bind() metto questa funzione dentro la funzione principale (callback)
     function cellClicked () {
+        // prendo la stringa dell'item cliccato e la converto in numero
+        const clickedItem = parseInt(this.querySelector("span").textContent);
 
-
-        
-        this.classList.add("selected");
-        console.log(this);
+        // se l'item è presente nell'array allora ho perso
+        if (bombsArray.includes(clickedItem)) {
+            this.classList.add("bomb");
+        } else {
+            // altrimenti non ci sono bombe e proseguo
+            this.classList.add("selected");
+            console.log(this);
+        }
     }
 }
 
@@ -115,7 +121,7 @@ function generateRandomNumb (bombsQuantity, maxLimit) {
         const randomNumber = randomInteger(1, maxLimit);
 
         // se il numero non è all'interno dell'array, lo pusho dentro
-        if ( !numberArray.includes(randomNumber) ) {
+        if ( !numberArray.includes(randomNumber)) {
             numberArray.push(randomNumber);
         }
     }
