@@ -98,6 +98,11 @@ main {
     color: white;
 }
 
+.bomb {
+    background-color: #f72b54;
+    color: white;
+}
+
 /* FOOTER */
 footer {
     position: fixed;

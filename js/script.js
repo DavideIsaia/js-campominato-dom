@@ -47,6 +47,11 @@ function play() {
     const grid = document.createElement("div");
     grid.className = "grid";
     // console.log(grid);
+
+    // geenero le bombe sulla griglia in modo random
+    const bombsQuantity = 16;
+    const bombsArray = generateRandomNumb(bombsQuantity,gridSize);     
+
     // genero le celle da 1 a gridSize
     for (let i = 1; i <= gridSize; i++) {
         const item = createGridItem(i, gridSideLength);
@@ -96,10 +101,10 @@ function createGridItem(number, gridSideLength) {
 }
 
 /**
- * Description
+ * Descrizione: la funzione genera un array con la quantità di numeri random che voglio (senza ripetizioni) in base al range entro cui voglio trovarli
  * @param {any} quantity
  * @param {any} maxLimit
- * @returns {any}
+ * @returns {any} un array dove si trovano i numeri random
  */
 function generateRandomNumb (bombsQuantity, maxLimit) {
     // creo l'array
@@ -118,6 +123,7 @@ function generateRandomNumb (bombsQuantity, maxLimit) {
     return numberArray; 
 }
 
+// genera numeri interi random entro un range
 function randomInteger(min, max) {
     return Math.floor(Math.random() * (max - min + 1) ) + min;
 }
