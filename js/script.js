@@ -49,7 +49,7 @@ function play() {
     const safeItem = [];
     const maxPoints = gridSize - bombsQuantity;
 
-    console.log("difficoltà", difficulty, "grandezza griglia", gridSize, "lato griglia", gridSideLength);
+    // console.log("difficoltà", difficulty, "grandezza griglia", gridSize, "lato griglia", gridSideLength);
     
     const grid = document.createElement("div");
     grid.className = "grid";
@@ -62,11 +62,9 @@ function play() {
         // console.log(item);
         // aggiungo la classe per colorare la casella al clic tramite il "this"
         item.addEventListener("click", cellClicked);
-        // grid.append.item;
-        // document.getElementsByTagName("main")[0].appendChild(grid);
     }
-    document.getElementsByTagName("main")[0].appendChild(grid);
-    
+
+    document.querySelector("main").appendChild(grid);    
 
     // per non usare metodo bind() metto questa funzione dentro la funzione principale (callback)
     function cellClicked () {
@@ -79,7 +77,7 @@ function play() {
         } else {
             // altrimenti non ci sono bombe e proseguo
             this.classList.add("selected");
-            console.log(this);
+            // console.log(this);
             // elimino la possibilità di poter ricliccare sugli item
             this.style.pointerEvents = "none";
 
