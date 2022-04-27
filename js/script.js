@@ -100,7 +100,7 @@ function play() {
         for (let i = 1; i < items.length; i++) {
             // devo mettere i - 1 altrimenti l'array (che parte a contare da zero) punterà alla casella successiva
             const square = items[i - 1];
-            // se l'array delle bombe include l'item cliccato allora finisci il gioco
+            // se l'array delle bombe include l'item cliccato allora finisci il gioco e mostra le bombe a schermo
             if (bombsArray.includes(i)) {
                 square.classList.add("bomb");
             }
